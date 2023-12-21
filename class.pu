@@ -1,0 +1,99 @@
+@startuml JankenGame
+title 「じゃんけんゲーム」クラス図
+
+' パッケージスタイル：Node, Rectangle, Folder, Frame, Cloud, Database
+package JankenGamePackage <<Folder>> {
+    ' クラス
+    ' <<>>：ステレオタイプ
+    ' -：private, +：public
+    class User <<ユーザー>> {
+        + void 手を選ぶ()
+    }
+
+    class Computer <<コンピューター>> {
+        + void 手を選ぶ()
+    }
+
+    ' 抽象クラス
+    abstract class Player <<プレイヤー>> {
+        - int 手
+        + void 手を選ぶ()
+        + int 手を返す()
+    }
+
+    class Jadger <<審判>> {
+        - String 判定結果
+        + String 判定する()
+        + void 結果を表示する()
+    }
+
+    class Janken <<じゃんけん>> {
+        + void 競技する()
+    }
+
+    ' {static}：静的メソッド
+    class JankenGame <<じゃんけんゲーム>> {
+        + {static} void main()
+    }
+
+    ' 注釈：top, bottom, right, leftの位置指定可能
+    note top of User
+        test
+    end note
+
+    ' フィールドやメソッドに対する注釈は :: を使う
+    ' この場合、rightとleftのみ対応
+    note left of Player::手
+        グー・チョキ・パー
+        を数字で表現
+    end note
+
+    ' 複数のクラスを繋ぐ注釈
+    note "抽象クラス「Player」の具象クラス" as N2
+    User .. N2
+    N2 .. Computer
+
+    ' リンク
+    User --|> Player
+
+    ' リンクへの注釈
+    note left on link
+        汎化
+    end note
+
+    Computer --|> Player
+    note left on link
+        汎化
+    end note
+
+
+    
+    Player --* Janken
+    note left on link
+        集約
+    end note
+
+    Jadger --* Janken
+    note left on link
+        集約
+    end note
+
+    ' 矢印の向き：-up, -down, -right, -left
+    JankenGame -up..> Janken
+    note left on link
+        依存
+    end note
+}
+' json JSON {
+'     "fruit": "Apple",
+'     "size": "Large",
+'     "color": ["Red", "Green"],
+'     "person": {
+'         "name": "fujii",
+'         "age": 33
+'     }
+' }
+' class A.B.C.D.Z {
+
+' }
+@enduml

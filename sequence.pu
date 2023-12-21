@@ -1,0 +1,40 @@
+@startuml JankenGame
+title 「JankenGame」シーケンス図
+
+' 分類子の宣言：participant, actor, boundary, control, entity, database, collections, queue
+' 省略した場合participantになる
+' ここでの宣言順に並ぶ
+participant JankenGame <<じゃんけんゲーム>>
+participant Janken <<じゃんけん>>
+actor User <<ユーザー>>
+actor Computer <<コンピューター>>
+actor Jadger <<審判>>
+
+' ライフラインの活性化：activate, deactivate
+activate JankenGame
+JankenGame -> Janken: 競技する()
+activate Janken
+Janken -> User: 手を選ぶ()
+activate User
+Janken -> Computer: 手を選ぶ()
+deactivate User
+activate Computer
+Janken -> Jadger: 判定する()
+deactivate Computer
+activate Jadger
+Jadger -> User: 手を返す()
+activate User
+
+' return：最近活性化したライフラインに返す
+return 手
+
+deactivate User
+Jadger -> Computer: 手を返す()
+activate Computer
+return 手
+deactivate Computer
+Janken -> Jadger: 結果を表示する()
+deactivate Jadger
+deactivate Janken
+deactivate JankenGame
+@enduml
